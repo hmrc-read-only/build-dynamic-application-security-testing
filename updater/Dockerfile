@@ -36,9 +36,9 @@ RUN groupmod -g 64 dialout \
     && chown -R builder:union "${workdir}"
 RUN apk add --no-cache \
     bash=~5.3.9-r1 \
-    docker~=29.9.2-r0 \
+    docker~=29.9.3-r1 \
     gcc~=15.2.0 \
-    git~=2.54.0-r0 \
+    git~=2.54.1-r0 \
     musl-dev \
     make=~4.4.1-r4 \
     && pip install --no-cache-dir --index-url https://artefacts.tax.service.gov.uk/artifactory/api/pypi/pips/simple pipenv==2024.1.0
