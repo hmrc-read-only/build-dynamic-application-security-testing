@@ -25,15 +25,7 @@ class TestMissingConfig(TestCase):
 class TestSlackNotifier(TestCase):
     def test_send_message(self) -> None:
         self._register_slack_api_success()
-        blocks = [
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "the message body"
-                }
-            }
-        ]
+        blocks = [{"type": "section", "text": {"type": "mrkdwn", "text": "the message body"}}]
         slack.Notifier("slack-channel", display="user", emoji=":robot_face:").send_message("the text", blocks)
         self._assert_headers_correct()
         self._assert_payload_correct(["slack-channel"], "user", ":robot_face:", "the text", blocks)
@@ -72,7 +64,7 @@ class TestSlackNotifier(TestCase):
         self.assertIn(("Authorization", "token"), headers)
 
     def _assert_payload_correct(
-            self, channels: List[str], display:str, emoji:str, text: str, blocks: List[Dict[str, Any]]
+        self, channels: List[str], display: str, emoji: str, text: str, blocks: List[Dict[str, Any]]
     ) -> None:
         self.assertEqual(
             {
@@ -83,7 +75,7 @@ class TestSlackNotifier(TestCase):
                 "displayName": display,
                 "emoji": emoji,
                 "text": text,
-                "blocks": blocks
+                "blocks": blocks,
             },
             json.loads(httpretty.last_request().body),
         )
