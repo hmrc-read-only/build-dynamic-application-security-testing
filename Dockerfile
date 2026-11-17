@@ -27,7 +27,7 @@ RUN set -eux; \
         printf '#!/bin/sh\nexit 0\n' >/sbin/ldconfig; \
         chmod +x /sbin/ldconfig; \
     fi; \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates; \
+    DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=0 install -y apt libbrotli1 ca-certificates; \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         jq=1.7.1* \
         rinetd=0.73*; \

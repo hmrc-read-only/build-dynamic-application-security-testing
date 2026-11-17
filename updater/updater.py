@@ -136,11 +136,13 @@ def main(zap_addons_path: str, dockerfile_path: str, xml_url: str, publish: bool
                         "<https://github.com/hmrc/build-dynamic-application-security-testing/blob/main/updater/README.md#troubleshooting-pr-builder-failures|the troubleshooting guidance> "
                         "for possible fixes. If it succeeds, please approve and merge the PR, then follow "
                         "<https://github.com/hmrc/build-dynamic-application-security-testing/blob/main/updater/README.md#deployment-steps|the deployment steps in the README>."
-                    )
-                }
+                    ),
+                },
             }
         ]
-        slack.Notifier("team-platops-alerts", display="DAST Addons Updater", emoji=":owasp-zap:").send_message("ZAP addons update", blocks)
+        slack.Notifier("team-platops-alerts", display="DAST Addons Updater", emoji=":owasp-zap:").send_message(
+            "ZAP addons update", blocks
+        )
 
 
 def publish_changes(dockerfile_path: str, pr_message: str) -> PullRequest:
