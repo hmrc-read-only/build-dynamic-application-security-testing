@@ -21,18 +21,13 @@ RUN sed -i 's|http:|https:|g' /etc/apt/sources.list.d/debian.sources
 RUN set -eux; \
     echo 'Acquire::https::Verify-Peer "false";' >/etc/apt/apt.conf.d/80-ignore-tls; \
     apt-get update; \
-    # CVE-2026-109518 / CVE-2026-111497: patch apt and brotli before installing anything else
-    DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=0 install --only-upgrade -y apt; \
-    dpkg --compare-versions "$(dpkg-query -W -f='${Version}' apt)" ge 3.0.4; \
-    DEBIAN_FRONTEND=noninteractive apt-get install --only-upgrade -y libbrotli1; \
-    dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1; \
     arch="$(uname -m)"; \
     if [ "${arch}" = "aarch64" ] || [ "${arch}" = "arm64" ]; then \
         dpkg-divert --add --rename --divert /sbin/ldconfig.real /sbin/ldconfig; \
         printf '#!/bin/sh\nexit 0\n' >/sbin/ldconfig; \
         chmod +x /sbin/ldconfig; \
     fi; \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates; \
+    DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=0 install -y apt libbrotli1 ca-certificates; \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         jq=1.7.1* \
         rinetd=0.73*; \
